@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="btn_name">NOMBRE</string>
+    <string name="hint_name">Nombre</string>
+    <string name="btn_course">CURSO</string>
+    <string name="btn_languages">LENGUAJES</string>
+    <string name="btn_new_inscription">NUEVA INSCRIPCIÓN</string>
+    <string name="title_new_registration">Nueva inscripción</string>
+    <string name="subtitle_new_registration">¿Quieres crear un nuevo registro?</string>
+    <string name="btn_yes">Sí</string>
+    <string name="title_name">Introduce el dato</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_accept">Aceptar</string>
+    <string name="title_course">Seleccione un curso</string>
+    <string name="title_languages">Seleccione lenguajes</string>
+    <string name="btnClearAll">Limpiar todos</string>
+</resources>

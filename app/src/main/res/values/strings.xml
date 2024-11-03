@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name" translatable="false">Ficha Personal</string>
+    <string name="btn_name">NAME</string>
+    <string name="hint_name">Name</string>
+    <string name="btn_course">COURSE</string>
+    <string name="btn_languages">LANGUAGES</string>
+    <string name="btn_new_inscription">NEW INSCRIPTION</string>
+    <string name="rbt_dam" translatable="false">DAM</string>
+    <string name="rbt_daw" translatable="false">DAW</string>
+    <string name="rbt_asir" translatable="false">ASIR</string>
+    <string name="chk_java" translatable="false">Java</string>
+    <string name="chk_javascript" translatable="false">JavaScript</string>
+    <string name="chk_csharp" translatable="false">C#</string>
+    <string name="kotlin" translatable="false">Kotlin</string>
+    <string name="phyton" translatable="false">Phyton</string>
+    <string name="title_new_registration">New registration</string>
+    <string name="subtitle_new_registration">Do you want to create a new registration?</string>
+    <string name="btn_no" translatable="false">No</string>
+    <string name="btn_yes">Yes</string>
+    <string name="title_name">Enter data</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_accept">Accept</string>
+    <string name="title_course">Select course</string>
+    <string name="title_languages">Select languages</string>
+    <string name="btnClearAll">Clear all</string>
+
+</resources>
