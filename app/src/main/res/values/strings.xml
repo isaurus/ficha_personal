@@ -11,8 +11,8 @@
     <string name="chk_java" translatable="false">Java</string>
     <string name="chk_javascript" translatable="false">JavaScript</string>
     <string name="chk_csharp" translatable="false">C#</string>
-    <string name="kotlin" translatable="false">Kotlin</string>
-    <string name="phyton" translatable="false">Phyton</string>
+    <string name="chk_kotlin" translatable="false">Kotlin</string>
+    <string name="chk_phyton" translatable="false">Phyton</string>
     <string name="title_new_registration">New registration</string>
     <string name="subtitle_new_registration">Do you want to create a new registration?</string>
     <string name="btn_no" translatable="false">No</string>

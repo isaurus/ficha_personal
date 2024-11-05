@@ -4,9 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
     // Declaración de TextView para mostrar las cadenas de caracteres
     TextView txtUserName, txtCourse, txtLanguages;
 
+    // Declaración de int para almacenar el índice seleccionado en el RadioGroup de AlertDialog para Course
+    int selectedItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Vínculación de TextView a XML
         txtUserName = findViewById(R.id.txtUserName);
+        txtCourse = findViewById(R.id.txtCourse);
+        txtLanguages = findViewById(R.id.txtLanguages);
 
         // Vinculación de Layout personalizado a XML
         //final View customLayout = getLayoutInflater().inflate(R.layout.user_name_layout,null);
@@ -33,20 +36,37 @@ public class MainActivity extends AppCompatActivity {
 
         edtUserName = new EditText(this);
 
-        findViewById(R.id.btnName).setOnClickListener(this::createNewDialogTest);
-        findViewById(R.id.btnCourse).setOnClickListener(this::setCourse);
-        findViewById(R.id.btnLanguages).setOnClickListener(this::setLanguage);
-        findViewById(R.id.btnNewInscription).setOnClickListener(this::resetAll);
+        findViewById(R.id.btnName).setOnClickListener(this::createNameDialog);
+        findViewById(R.id.btnCourse).setOnClickListener(this::createCourseDialog);
+        findViewById(R.id.btnLanguages).setOnClickListener(this::createLanguageDialog);
+        findViewById(R.id.btnNewInscription).setOnClickListener(this::newInscription);
     }
 
-    private void setCourse(View v) {
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("Name", txtUserName.getText().toString());
     }
 
-    private void setLanguage(View v) {
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        txtUserName.setText(savedInstanceState.getString("Name", ""));
     }
 
-    private void resetAll(View v){
 
+    private void newInscription(View v){
+
+    }
+
+
+    private void clearSelection(boolean[] selectedItems){
+        for (int i = 0; i < selectedItems.length; i++){
+            selectedItems[i] = false;
+        }
     }
 
     /**
@@ -60,62 +80,98 @@ public class MainActivity extends AppCompatActivity {
         txtUserName.setText(userName);
     }
 
-    protected void showCourse(String[] itemList){
-        txtCourse.setText();
+    /**
+     * Método para mostrar en el TextView el RadioButton seleccionado.
+     *
+     * @param itemList La lista de items del AlertDialog
+     * @param id El id del botón seleccionado
+     */
+    protected void showCourse(String[] itemList, int id){
+        txtCourse.setText(itemList[id]);
     }
 
     /**
-     * Método para crear el AlertDialog al pulsar el botón "Nombre". Instancia un EditText
-     * que se pasa como parámetro a .setView(). El PositiveButton hace una llamada a
-     * showUserName() con el EditText como parámetro para obtener la cadena de caracteres introducida.
+     * Método para mostrar en el TextView los CheckBox seleccionados.
      *
-     * @param v La View (Button) que recibe al pulsar el Button de "Nombre"
+     * @param chkList El String[] que almacena el texto de cada CheckBox
+     * @param selectedItems El boolean[] que almacena si el CheckBox está seleccionado
      */
-    /*protected void createNameDialog(View v){
+    protected void showLanguages(String[] chkList, boolean[] selectedItems){
+        String result = "";
+        for (int i = 0; i < chkList.length; i++){
+            if (selectedItems[i]){
+                result += chkList[i] + "\n";
+            }
+        }
+        txtLanguages.setText(result);
+    }
+
+    /**
+     * Método para lanzar un AlertDialog con un EditText. Recoge la cadena introducida y la muestra
+     * en el TextView
+     *
+     * @param v La View (Button) que se pulsa
+     */
+    protected void createNameDialog(View v){
         EditText edtUserName = new EditText(MainActivity.this);
 
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle(getText(R.string.title_name).toString())
                 .setView(edtUserName)
                 .setNegativeButton(getText(R.string.btn_cancel), null)
-                .setPositiveButton(getText(R.string.btn_accept).toString(), (dialog, which) -> showUserName(edtUserName))
+                .setPositiveButton(getText(R.string.btn_accept), (dialog, which) -> showUserName(edtUserName))
                 .create()
                 .show();
-    }*/
+    }
 
     /**
-     * Método de prueba que lanza el AlertDialog correspondiente en tiempo de ejecución al pulsar
-     * uno de los Button.
+     * Método para lanzar un AlertDialog con RadioButton. Al seleccionar uno y pulsar PositiveButton
+     * se muestra el texto del RadioButton seleccionado en el TextView.
      *
-     * @param v La View (Button) que recibe al pulsar el Button
+     * @param v La View (Button) que se pulsa
      */
-    protected void createNewDialogTest(View v){
+    protected void createCourseDialog(View v){
+        final String[] itemList = new String[]{
+                getString(R.string.rbt_dam),
+                getString(R.string.rbt_daw),
+                getString(R.string.rbt_asir)
+        };
 
-        int viewId = v.getId();
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle(getText(R.string.title_course))
+                .setSingleChoiceItems(itemList, -1, (dialog, which) ->{
+                    selectedItem = which;
+                })
+                .setPositiveButton(getString(R.string.btn_accept), (dialog, which) -> showCourse(itemList, selectedItem))
+                .setNegativeButton(getString(R.string.btn_cancel), null)
+                .create()
+                .show();
+    }
 
-        if(viewId == R.id.btnName){
-            EditText edtUserName = new EditText(MainActivity.this);
+    /**
+     * Método para lanzar un AlertDialog con varios CheckBox. Al seleccionarlos y pulsar el
+     * PositiveButton se muestra el TextView
+     *
+     * @param v La View (Button) que se pulsa
+     */
+    protected void createLanguageDialog(View v){
+        final String[] chkList = new String[]{
+                getString(R.string.chk_java),
+                getString(R.string.chk_javascript),
+                getString(R.string.chk_csharp),
+                getString(R.string.chk_kotlin),
+                getString(R.string.chk_phyton)
+        };
 
-            new AlertDialog.Builder(MainActivity.this)
-                    .setTitle(getText(R.string.title_name).toString())
-                    .setView(edtUserName)
-                    .setNegativeButton(getText(R.string.btn_cancel), null)
-                    .setPositiveButton(getText(R.string.btn_accept).toString(), (dialog, which) -> showUserName(edtUserName))
-                    .create()
-                    .show();
+        boolean[] selectedItems = new boolean[chkList.length];
 
-        } else if (viewId == R.id.btnCourse) {
-            final String[] itemList = new String[]{getString(R.string.rbt_dam), getString(R.string.rbt_daw), getString(R.string.rbt_asir)};
-            int checkedItem[] = new int[]{};
-
-            new AlertDialog.Builder(MainActivity.this)
-                    .setTitle(getText(R.string.title_course).toString())
-                    .setSingleChoiceItems(itemList, checkedItem[-1], (dialog, which) -> showCourse(itemList))
-                    .create()
-                    .show();
-
-        } else if (viewId == R.id.btnLanguages) {
-
-        }
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle(getText(R.string.title_languages))
+                .setMultiChoiceItems(chkList, selectedItems, (dialog, which, isChecked) -> selectedItems[which] = isChecked)
+                .setPositiveButton(getString(R.string.btn_accept), (dialog, which) -> showLanguages(chkList, selectedItems))
+                .setNegativeButton(getString(R.string.btn_cancel), null)
+                .setNeutralButton(getString(R.string.btnClearAll), (dialog, which) -> clearSelection(selectedItems))
+                .create()
+                .show();
     }
 }
